@@ -1,7 +1,7 @@
 {
 	"name": "code-act-service",
 	"version": "1.1.0",
-	"description": "基于 egg + react + typescript + webpack 服务端渲染工程骨架项目",
+	"description": "结合自定义codeact脚手架使用的集成代码操作类服务",
 	"scripts": {
 		"start": "egg-bin dev -r egg-ts-helper/register",
 		"debug": "egg-bin debug",
