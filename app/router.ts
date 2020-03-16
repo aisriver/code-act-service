@@ -4,11 +4,12 @@
  * @作者: 廖军
  * @Date: 2020-03-15 19:04:38
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-16 22:17:21
+ * @LastEditTime: 2020-03-16 22:44:17
  */
 import { Application } from 'egg';
 export default (app: Application) => {
 	const { router, controller } = app;
+	router.get('/folder/delete', controller.folder.delete);
 	router.get('/folder/add', controller.folder.add);
 	router.get('/demo/node', controller.demo.nodeData);
 	router.get('/demo/async', controller.demo.asyncData);
