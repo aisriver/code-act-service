@@ -1,14 +1,14 @@
 /*
- * @文件描述:
- * @公司: thundersdata
+ * @文件描述: 路由
  * @作者: 廖军
  * @Date: 2020-03-15 19:04:38
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-16 22:44:17
+ * @LastEditTime: 2020-03-18 22:51:13
  */
 import { Application } from 'egg';
 export default (app: Application) => {
 	const { router, controller } = app;
+	router.get('/folder/rename', controller.folder.rename);
 	router.get('/folder/delete', controller.folder.delete);
 	router.get('/folder/add', controller.folder.add);
 	router.get('/demo/node', controller.demo.nodeData);

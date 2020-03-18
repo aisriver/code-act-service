@@ -5,11 +5,13 @@ import 'egg';
 import ExportAntd from '../../../app/controller/antd';
 import ExportBlog from '../../../app/controller/blog';
 import ExportDemo from '../../../app/controller/demo';
+import ExportFolder from '../../../app/controller/folder';
 
 declare module 'egg' {
   interface IController {
     antd: ExportAntd;
     blog: ExportBlog;
     demo: ExportDemo;
+    folder: ExportFolder;
   }
 }
