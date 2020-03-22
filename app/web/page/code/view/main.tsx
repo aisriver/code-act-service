@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Switch } from 'react-router-dom';
+import { Link, Switch, withRouter } from 'react-router-dom';
 import { hot } from 'react-hot-loader/root';
 import { ARTICLE_LIST, ARTICLE_DETAIL } from '../store/constant';
 import Layout from '../../../component/layout';
@@ -13,23 +13,23 @@ import './main.css';
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = { current: props.url };
-  }
-
-  tabClick(e) {
-    console.log('click', e.target);
   }
 
   render() {
+    const { pathname } = this.props.location;
     return (
       <Layout {...this.props}>
         <Header />
         <ul className="menu-tab">
-          <li onClick={this.tabClick.bind(this)}>
-            <Link to="/">CODE EDITOR</Link>
+          <li>
+            <Link className={pathname === '/' ? 'active' : ''} to="/">
+              编辑器
+            </Link>
           </li>
-          <li onClick={this.tabClick.bind(this)}>
-            <Link to="/async">CODE GENERATE</Link>
+          <li>
+            <Link className={pathname === '/async' ? 'active' : ''} to="/async">
+              生成器
+            </Link>
           </li>
         </ul>
         <Switch>
@@ -42,4 +42,4 @@ class Main extends Component {
   }
 }
 
-export default EASY_ENV_IS_DEV ? hot(Main) : Main;
+export default EASY_ENV_IS_DEV ? hot(withRouter(Main)) : withRouter(Main);

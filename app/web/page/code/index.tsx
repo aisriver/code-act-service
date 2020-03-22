@@ -20,7 +20,7 @@ class Entry extends Component {
       return (
         <Provider store={store}>
           <BrowserRouter location={url}>
-            <Main></Main>
+            <Main />
           </BrowserRouter>
         </Provider>
       );
@@ -30,7 +30,7 @@ class Entry extends Component {
     return (
       <Provider store={store}>
         <StaticRouter location={url} context={{}}>
-          <Main></Main>
+          <Main />
         </StaticRouter>
       </Provider>
     );
