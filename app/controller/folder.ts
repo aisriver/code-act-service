@@ -3,7 +3,7 @@
  * @作者: 廖军
  * @Date: 2020-03-16 18:16:28
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-22 16:16:32
+ * @LastEditTime: 2020-03-22 16:55:49
  */
 import { Controller, Context } from 'egg';
 import { getSuccessData, getErrorData } from '../utils/status';
@@ -181,6 +181,28 @@ export default class DemoController extends Controller {
       ctx.body = getSuccessData(data, '文件读取成功');
     } catch (error) {
       ctx.body = getErrorData(error, '文件读取异常！请检查路径是否有误');
+    }
+  }
+  /**
+   * 修改指定路径文件
+   * 测试地址 http://localhost:7001/folder/modifyFile
+   * 请求类型 POST
+   * 参数	 { "path": "test.js", "text": "修改成功了" }
+   * @param ctx
+   */
+  public async modifyFile(ctx: Context) {
+    const { path: pathStr, text } = ctx.request.body;
+    console.log(pathStr, text);
+    const errorParams = ['path', 'text'].filter(key => !ctx.request.body[key]);
+    if (errorParams.length > 0) {
+      ctx.body = getErrorData(ctx, `参数：${errorParams.join(',')} 不能为空！`);
+      return;
+    }
+    try {
+      fs.writeFileSync(`../${getClearPath(pathStr)}`, text, 'utf8');
+      ctx.body = getSuccessData(null, '文件修改成功');
+    } catch (error) {
+      ctx.body = getErrorData(error, '文件修改异常！请检查路径是否有误');
     }
   }
 }
