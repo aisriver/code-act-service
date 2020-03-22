@@ -3,7 +3,7 @@
  * @作者: 廖军
  * @Date: 2020-03-15 19:04:38
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-22 17:27:42
+ * @LastEditTime: 2020-03-22 21:38:40
  */
 import { Application } from 'egg';
 export default (app: Application) => {
@@ -19,7 +19,7 @@ export default (app: Application) => {
   router.get('/demo/async', controller.demo.asyncData);
   router.get('/demo/api/article', controller.demo.article);
   router.get('/antd', controller.antd.index);
-  router.get('/api/blog/list', controller.blog.list);
-  router.get('/api/blog/:id', controller.blog.detail);
-  router.get('/(.*?)', controller.blog.home);
+  router.get('/api/code/list', controller.code.list);
+  router.get('/api/code/:id', controller.code.detail);
+  router.get('/(.*?)', controller.code.home);
 };

@@ -3,7 +3,7 @@
 
 import 'egg';
 import ExportAntd from '../../../app/controller/antd';
-import ExportBlog from '../../../app/controller/blog';
+import ExportCode from '../../../app/controller/code';
 import ExportDemo from '../../../app/controller/demo';
 import ExportFile from '../../../app/controller/file';
 import ExportFolder from '../../../app/controller/folder';
@@ -11,7 +11,7 @@ import ExportFolder from '../../../app/controller/folder';
 declare module 'egg' {
   interface IController {
     antd: ExportAntd;
-    blog: ExportBlog;
+    code: ExportCode;
     demo: ExportDemo;
     file: ExportFile;
     folder: ExportFolder;

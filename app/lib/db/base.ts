@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as shortid from 'shortid';
 import { PlainObject } from 'egg';
 
-const dbpath = path.resolve(__dirname, 'blog.json');
+const dbpath = path.resolve(__dirname, 'code.json');
 
 export default class DB {
   public instance: any;
