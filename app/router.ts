@@ -3,13 +3,14 @@
  * @作者: 廖军
  * @Date: 2020-03-15 19:04:38
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-22 16:28:58
+ * @LastEditTime: 2020-03-22 17:27:42
  */
 import { Application } from 'egg';
 export default (app: Application) => {
   const { router, controller } = app;
-  router.post('/folder/modifyFile', controller.folder.modifyFile);
-  router.get('/folder/readFile', controller.folder.readFile);
+  router.get('/file/delete', controller.file.delete);
+  router.post('/file/modify', controller.file.modify);
+  router.get('/file/read', controller.file.read);
   router.get('/folder/structure', controller.folder.structure);
   router.get('/folder/rename', controller.folder.rename);
   router.get('/folder/delete', controller.folder.delete);

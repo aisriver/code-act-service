@@ -4,7 +4,7 @@
  * @作者: 廖军
  * @Date: 2020-03-16 21:57:51
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-22 16:13:51
+ * @LastEditTime: 2020-03-22 17:39:28
  */
 
 /**
@@ -18,3 +18,6 @@ export const getToRootPathCommand = () => 'cd ..';
  */
 export const getClearPath = (pathStr: string) =>
   pathStr.startsWith('/') ? pathStr.substring(1, pathStr.length) : pathStr;
+
+// 到根目录的路径
+export const toRootPath = '../';

@@ -3,18 +3,19 @@
  * @作者: 廖军
  * @Date: 2020-03-16 18:16:28
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-22 16:55:49
+ * @LastEditTime: 2020-03-22 17:41:08
  */
 import { Controller, Context } from 'egg';
 import { getSuccessData, getErrorData } from '../utils/status';
 import { execPromise, getCommandByArray } from '../utils/process';
-import { getToRootPathCommand, getClearPath } from '../utils/path';
+import { getToRootPathCommand, getClearPath, toRootPath } from '../utils/path';
 import { commandConfig } from '../utils/command';
+import { checkCtxParams } from '../utils/check';
 
 const fs = require('fs');
 const path = require('path');
 
-export default class DemoController extends Controller {
+export default class FolderController extends Controller {
   /**
    * 到指定目录新建文件夹
    * 测试地址 http://localhost:7001/folder/add?path=src%2fpages&folderName=testPage
@@ -22,9 +23,9 @@ export default class DemoController extends Controller {
    */
   public async add(ctx: Context) {
     const { path: pathStr, folderName } = ctx.query;
-    const errorParams = ['path', 'folderName'].filter(key => !ctx.query[key]);
-    if (errorParams.length > 0) {
-      ctx.body = getErrorData(ctx, `参数：${errorParams.join(',')} 不能为空！`);
+    const checkParams = checkCtxParams(ctx, ['path', 'folderName']);
+    if (!checkParams.isPass) {
+      ctx.body = checkParams.body;
       return;
     }
     const toRoot = getToRootPathCommand();
@@ -55,9 +56,9 @@ export default class DemoController extends Controller {
    */
   public async delete(ctx: Context) {
     const { path: pathStr, folderName } = ctx.query;
-    const errorParams = ['path', 'folderName'].filter(key => !ctx.query[key]);
-    if (errorParams.length > 0) {
-      ctx.body = getErrorData(ctx, `参数：${errorParams.join(',')} 不能为空！`);
+    const checkParams = checkCtxParams(ctx, ['path', 'folderName']);
+    if (!checkParams.isPass) {
+      ctx.body = checkParams.body;
       return;
     }
     const toRoot = getToRootPathCommand();
@@ -88,9 +89,9 @@ export default class DemoController extends Controller {
    */
   public async rename(ctx: Context) {
     const { path: pathStr, folderName, newFolderName } = ctx.query;
-    const errorParams = ['path', 'folderName', 'newFolderName'].filter(key => !ctx.query[key]);
-    if (errorParams.length > 0) {
-      ctx.body = getErrorData(ctx, `参数：${errorParams.join(',')} 不能为空！`);
+    const checkParams = checkCtxParams(ctx, ['path', 'folderName', 'newFolderName']);
+    if (!checkParams.isPass) {
+      ctx.body = checkParams.body;
       return;
     }
     const toRoot = getToRootPathCommand();
@@ -122,7 +123,7 @@ export default class DemoController extends Controller {
   public async structure(ctx: Context) {
     const pathStr = ctx.query.path;
     const toRoot = getToRootPathCommand();
-    let basePath = '../';
+    let basePath = toRootPath;
     if (pathStr) {
       // 检查文件夹是否存在
       const checkCommands = [toRoot];
@@ -163,46 +164,6 @@ export default class DemoController extends Controller {
       ctx.body = getSuccessData(data, '目录结构获取成功');
     } catch (error) {
       ctx.body = getErrorData(error, '目录结构获取异常！');
-    }
-  }
-  /**
-   * 读取指定路径文件
-   * 测试地址 http://localhost:7001/folder/readFile?path=codeact.config.js
-   * @param ctx
-   */
-  public async readFile(ctx: Context) {
-    const pathStr = ctx.query.path;
-    if (!pathStr) {
-      ctx.body = getErrorData(ctx, '参数：path 不能为空！');
-      return;
-    }
-    try {
-      const data = fs.readFileSync(`../${getClearPath(pathStr)}`, 'utf8');
-      ctx.body = getSuccessData(data, '文件读取成功');
-    } catch (error) {
-      ctx.body = getErrorData(error, '文件读取异常！请检查路径是否有误');
-    }
-  }
-  /**
-   * 修改指定路径文件
-   * 测试地址 http://localhost:7001/folder/modifyFile
-   * 请求类型 POST
-   * 参数	 { "path": "test.js", "text": "修改成功了" }
-   * @param ctx
-   */
-  public async modifyFile(ctx: Context) {
-    const { path: pathStr, text } = ctx.request.body;
-    console.log(pathStr, text);
-    const errorParams = ['path', 'text'].filter(key => !ctx.request.body[key]);
-    if (errorParams.length > 0) {
-      ctx.body = getErrorData(ctx, `参数：${errorParams.join(',')} 不能为空！`);
-      return;
-    }
-    try {
-      fs.writeFileSync(`../${getClearPath(pathStr)}`, text, 'utf8');
-      ctx.body = getSuccessData(null, '文件修改成功');
-    } catch (error) {
-      ctx.body = getErrorData(error, '文件修改异常！请检查路径是否有误');
     }
   }
 }

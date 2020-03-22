@@ -5,6 +5,7 @@ import 'egg';
 import ExportAntd from '../../../app/controller/antd';
 import ExportBlog from '../../../app/controller/blog';
 import ExportDemo from '../../../app/controller/demo';
+import ExportFile from '../../../app/controller/file';
 import ExportFolder from '../../../app/controller/folder';
 
 declare module 'egg' {
@@ -12,6 +13,7 @@ declare module 'egg' {
     antd: ExportAntd;
     blog: ExportBlog;
     demo: ExportDemo;
+    file: ExportFile;
     folder: ExportFolder;
   }
 }
