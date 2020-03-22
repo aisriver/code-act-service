@@ -3,12 +3,12 @@
  * @作者: 廖军
  * @Date: 2020-03-16 18:16:28
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-22 15:59:22
+ * @LastEditTime: 2020-03-22 16:16:32
  */
 import { Controller, Context } from 'egg';
 import { getSuccessData, getErrorData } from '../utils/status';
 import { execPromise, getCommandByArray } from '../utils/process';
-import { getToRootPathCommand } from '../utils/path';
+import { getToRootPathCommand, getClearPath } from '../utils/path';
 import { commandConfig } from '../utils/command';
 
 const fs = require('fs');
@@ -132,7 +132,7 @@ export default class DemoController extends Controller {
         ctx.body = getErrorData(null, `路径 ${pathStr} 有误！`);
         return;
       }
-      basePath += pathStr.startsWith('/') ? pathStr.substring(1, pathStr.length) : pathStr;
+      basePath += getClearPath(pathStr);
     }
     try {
       const data = [];
@@ -147,7 +147,7 @@ export default class DemoController extends Controller {
           const currentPath = path.join(dirPath, name);
           const stats = fs.statSync(currentPath);
           // 记录路径 便于直接获取文件或打开文件夹
-          dataObj['path'] = currentPath;
+          dataObj['path'] = currentPath.substring(3, currentPath.length);
           if (stats.isDirectory()) {
             dataObj['type'] = 'dir';
             dataObj['children'] = [];
@@ -163,6 +163,24 @@ export default class DemoController extends Controller {
       ctx.body = getSuccessData(data, '目录结构获取成功');
     } catch (error) {
       ctx.body = getErrorData(error, '目录结构获取异常！');
+    }
+  }
+  /**
+   * 读取指定路径文件
+   * 测试地址 http://localhost:7001/folder/readFile?path=codeact.config.js
+   * @param ctx
+   */
+  public async readFile(ctx: Context) {
+    const pathStr = ctx.query.path;
+    if (!pathStr) {
+      ctx.body = getErrorData(ctx, '参数：path 不能为空！');
+      return;
+    }
+    try {
+      const data = fs.readFileSync(`../${getClearPath(pathStr)}`, 'utf8');
+      ctx.body = getSuccessData(data, '文件读取成功');
+    } catch (error) {
+      ctx.body = getErrorData(error, '文件读取异常！请检查路径是否有误');
     }
   }
 }
