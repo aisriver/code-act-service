@@ -3,7 +3,7 @@
  * @作者: 廖军
  * @Date: 2020-03-22 17:07:00
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-22 17:40:40
+ * @LastEditTime: 2020-03-24 00:50:32
  */
 import { Controller, Context } from 'egg';
 import { getSuccessData, getErrorData } from '../utils/status';
@@ -42,7 +42,7 @@ export default class FileController extends Controller {
    */
   public async modify(ctx: Context) {
     const { path: pathStr, text } = ctx.request.body;
-    const checkParams = checkCtxParams(ctx, ['path', 'text']);
+    const checkParams = checkCtxParams(ctx, ['path', 'text'], 'post');
     if (!checkParams.isPass) {
       ctx.body = checkParams.body;
       return;

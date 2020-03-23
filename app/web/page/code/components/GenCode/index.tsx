@@ -13,10 +13,12 @@ const codeMirrorOptions = {
 
 export interface GenCodeProps {
   value: string;
+  onChange?: (editor: object, data: object, value: string) => void;
 }
-export default forwardRef<CodeMirror, GenCodeProps>(({ value }, ref) => {
+export default forwardRef<CodeMirror, GenCodeProps>(({ value, onChange }, ref) => {
   return (
     <CodeMirror
+      onChange={onChange}
       ref={ref}
       value={value}
       options={codeMirrorOptions}

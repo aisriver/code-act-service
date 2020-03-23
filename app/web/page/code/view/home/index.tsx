@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createRef } from 'react';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader/root';
-import { Tree, Row, Col } from 'antd';
+import { Tree, Row, Col, Button, message } from 'antd';
 import { FolderOpenFilled, FileTextOutlined } from '@ant-design/icons';
 import { UnControlled } from 'react-codemirror2';
 import request from '../../../../framework/request';
@@ -21,6 +21,7 @@ export interface ListType {
 const Home: React.FC = () => {
   const [list, setList] = useState<ListType[]>([]);
   const [fileText, setFileText] = useState('');
+  const [selected, setSelected] = useState({});
   const codeMirrorRef = createRef<UnControlled>();
 
   useEffect(() => {
@@ -55,8 +56,15 @@ const Home: React.FC = () => {
       },
     );
 
+  /**
+   * 选中节点
+   * @param _selectedKeys
+   * @param e
+   */
   const handleSelect = (_selectedKeys, e) => {
-    const { path, type } = e.node.props.item;
+    const { item } = e.node.props;
+    const { path, type } = item;
+    setSelected(item);
     if (type === 'file') {
       tryCatch(async () => {
         const result = await request.get<string>('/file/read', { path });
@@ -68,17 +76,55 @@ const Home: React.FC = () => {
     }
   };
 
+  /**
+   * 保存修改后的文件
+   */
+  const handleSaveFile = () => {
+    const path = selected['path'];
+    if (!path) {
+      message.error('文件路径有误！');
+      return false;
+    }
+    tryCatch(async () => {
+      const result = await request.postJSON('/file/modify', {
+        path,
+        text: fileText,
+      });
+      if (!result.success) {
+        throw result;
+      }
+      message.success(result.message);
+    });
+  };
+
   return (
-    <Row className={styles.container}>
-      <Col className={styles.left} span={6} offset={2}>
-        <Tree onSelect={handleSelect} switcherIcon={<FolderOpenFilled />} defaultExpandedKeys={[]}>
-          {renderNodes(list)}
-        </Tree>
-      </Col>
-      <Col className={styles.right} span={14}>
-        <GenCode ref={codeMirrorRef} value={fileText} />
-      </Col>
-    </Row>
+    <div>
+      <Row className={styles.container}>
+        <Col className={styles.left} span={6} offset={2}>
+          <Tree
+            onSelect={handleSelect}
+            switcherIcon={<FolderOpenFilled />}
+            defaultExpandedKeys={[]}
+          >
+            {renderNodes(list)}
+          </Tree>
+        </Col>
+        <Col className={styles.right} span={14}>
+          <GenCode
+            onChange={(_editor, _data, value: string) => setFileText(value)}
+            ref={codeMirrorRef}
+            value={fileText}
+          />
+        </Col>
+      </Row>
+      <div className={styles.footer}>
+        {selected['type'] === 'file' && (
+          <Button onClick={handleSaveFile} className={styles.save}>
+            保存
+          </Button>
+        )}
+      </div>
+    </div>
   );
 };
 
