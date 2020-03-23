@@ -1,0 +1,32 @@
+.container {
+  .left {
+    padding: 24px 0;
+    background-color: #222329;
+    height: 100vh;
+    overflow-y: auto;
+
+    .tree {
+      :global {
+        .ant-tree-switcher {
+          background-color: #222329 !important;
+          color: #808080 !important;
+
+          .anticon {
+            font-size: 20px !important;
+          }
+        }
+        .ant-tree-node-content-wrapper {
+          color: #999 !important;
+          font-family: 'Lora', 'Times New Roman', serif;
+        }
+      }
+    }
+  }
+  .right {
+    padding: 8px;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #191b22;
+    font-family: 'Lora', 'Times New Roman', serif;
+  }
+}

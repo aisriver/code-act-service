@@ -6,6 +6,23 @@ import createStore from './store';
 import createRouter from './router';
 import Main from './view/main';
 import '../../asset/css/code.css';
+import { CustomWindow } from '../../framework/request';
+
+((window as unknown) as CustomWindow).requestConfig = {
+  withCredentials: false,
+  getToken() {
+    const accessToken = '';
+    return Promise.resolve(accessToken);
+  },
+};
+((window as unknown) as CustomWindow).authConfig = {
+  url: '',
+  client_id: '',
+  client_secret: '',
+  password_min: 6,
+  password_max: 20,
+  company: 0,
+};
 
 class Entry extends Component {
   static async asyncData(context) {

@@ -17,8 +17,10 @@
 		"changelog": "conventional-changelog -p angular -i CHANGELOG.md  -s"
 	},
 	"dependencies": {
+		"@ant-design/icons": "^4.0.3",
 		"@hubcarl/json-typescript-mapper": "2.0.0",
 		"axios": "^0.19.2",
+		"codemirror": "^5.52.2",
 		"cross-env": "^5.0.0",
 		"egg": "^2.1.0",
 		"egg-cors": "^2.0.0",
@@ -33,6 +35,7 @@
 		"mobx-react": "^6.1.4",
 		"moment": "^2.17.1",
 		"react": "^16.0.0",
+		"react-codemirror2": "^7.1.0",
 		"react-dom": "^16.0.0",
 		"react-loadable": "^5.5.0",
 		"react-redux": "^5.0.6",
@@ -45,12 +48,12 @@
 		"showdown": "^1.8.6"
 	},
 	"devDependencies": {
+		"@easy-team/easywebpack-cli": "^4.0.0",
+		"@easy-team/easywebpack-react": "^4.0.0",
 		"@types/react": "^16.0.34",
 		"@types/react-dom": "^16.0.3",
 		"antd": "^3.0.3",
 		"autod-egg": "^1.0.0",
-		"@easy-team/easywebpack-cli": "^4.0.0",
-		"@easy-team/easywebpack-react": "^4.0.0",
 		"egg-bin": "^4.7.1",
 		"egg-ts-helper": "^1.9.0",
 		"egg-webpack": "^4.0.0",
