@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-import 'codemirror/mode/javascript/javascript'; // typescript
+import 'codemirror/mode/javascript/javascript';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/ayu-dark.css';
 
@@ -23,7 +23,7 @@ export default forwardRef<CodeMirror, GenCodeProps>(({ value, onChange }, ref) =
       value={value}
       options={codeMirrorOptions}
       editorDidMount={editor => {
-        editor.setSize('100%', 600);
+        editor.setSize('100%', '100vh');
       }}
     />
   );
