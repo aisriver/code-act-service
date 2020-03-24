@@ -1,7 +1,6 @@
 import { Route } from 'react-router-dom';
 import Home from '../view/home';
-import Async from '../view/async';
-import Detail from '../view/detail';
+import Introduce from '../view/introduce';
 const NotFound = () => {
   return (
     <Route
@@ -22,12 +21,8 @@ const NotFound = () => {
 export default function createRouter() {
   return [
     {
-      path: '/detail/:id',
-      component: Detail,
-    },
-    {
-      path: '/async',
-      component: Async,
+      path: '/introduce',
+      component: Introduce,
     },
     {
       path: '/',

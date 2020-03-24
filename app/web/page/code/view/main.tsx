@@ -7,7 +7,7 @@ import Header from '../../../component/header';
 import Route from '../router/route';
 import Home from './home';
 import Detail from './detail';
-import Async from './async';
+import Introduce from './introduce';
 import './main.css';
 
 class Main extends Component {
@@ -27,14 +27,20 @@ class Main extends Component {
             </Link>
           </li>
           <li>
-            <Link className={pathname === '/async' ? 'active' : ''} to="/async">
-              生成器
+            <Link className={pathname === '/introduce' ? 'active' : ''} to="/introduce">
+              文档
             </Link>
           </li>
+          {/* <li>
+            <Link className={pathname === '/generator' ? 'active' : ''} to="/generator">
+              生成器
+            </Link>
+          </li> */}
         </ul>
         <Switch>
           <Route type={ARTICLE_DETAIL} path="/detail/:id" component={Detail} />
-          <Route path="/async" component={Async} />
+          {/* <Route path="/generator" component={Generator} /> */}
+          <Route path="/introduce" component={Introduce} />
           <Route type={ARTICLE_LIST} path="/" component={Home} />
         </Switch>
       </Layout>
