@@ -3,7 +3,7 @@
  * @作者: 廖军
  * @Date: 2020-03-16 18:16:28
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-22 17:41:08
+ * @LastEditTime: 2020-03-24 22:45:18
  */
 import { Controller, Context } from 'egg';
 import { getSuccessData, getErrorData } from '../utils/status';
@@ -23,7 +23,7 @@ export default class FolderController extends Controller {
    */
   public async add(ctx: Context) {
     const { path: pathStr, folderName } = ctx.query;
-    const checkParams = checkCtxParams(ctx, ['path', 'folderName']);
+    const checkParams = checkCtxParams(ctx, ['folderName']);
     if (!checkParams.isPass) {
       ctx.body = checkParams.body;
       return;
@@ -38,7 +38,7 @@ export default class FolderController extends Controller {
     // 获取创建命令并创建
     const command = getCommandByArray([
       toRoot,
-      `cd ${pathStr}`,
+      pathStr ? `cd ${pathStr}` : '',
       `${commandConfig.addFolder} ${folderName}`,
     ]);
     const result = await execPromise(command);
@@ -47,7 +47,7 @@ export default class FolderController extends Controller {
       ctx.body = getErrorData(result.error, '创建文件夹失败，请检查路径是否正确！');
       return;
     }
-    ctx.body = getSuccessData(null, `创建文件夹 ${folderName} 至 ${pathStr}！`);
+    ctx.body = getSuccessData(null, `成功创建文件夹 ${folderName} 至 ${pathStr || '根目录'}！`);
   }
   /**
    * 到指定目录删除目标文件夹
@@ -56,24 +56,21 @@ export default class FolderController extends Controller {
    */
   public async delete(ctx: Context) {
     const { path: pathStr, folderName } = ctx.query;
-    const checkParams = checkCtxParams(ctx, ['path', 'folderName']);
+    const checkParams = checkCtxParams(ctx, ['folderName']);
     if (!checkParams.isPass) {
       ctx.body = checkParams.body;
       return;
     }
     const toRoot = getToRootPathCommand();
+    const cdPath = pathStr ? `cd ${pathStr}/${folderName}` : '';
     // 检查文件夹是否存在
-    const check = await execPromise(getCommandByArray([toRoot, `cd ${pathStr}/${folderName}`]));
+    const check = await execPromise(getCommandByArray([toRoot, cdPath]));
     if (check.error) {
       ctx.body = getErrorData(null, `路径 ${pathStr} 未发现 ${folderName} 文件夹！`);
       return;
     }
     // 删除目标文件夹
-    const command = getCommandByArray([
-      toRoot,
-      `cd ${pathStr}`,
-      `${commandConfig.delete} ${folderName}`,
-    ]);
+    const command = getCommandByArray([toRoot, cdPath, `${commandConfig.delete} ${folderName}`]);
     const result = await execPromise(command);
     // 删除异常
     if (result.error) {

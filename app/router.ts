@@ -3,11 +3,12 @@
  * @作者: 廖军
  * @Date: 2020-03-15 19:04:38
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-22 21:38:40
+ * @LastEditTime: 2020-03-24 22:21:16
  */
 import { Application } from 'egg';
 export default (app: Application) => {
   const { router, controller } = app;
+  router.get('/file/add', controller.file.add);
   router.get('/file/delete', controller.file.delete);
   router.post('/file/modify', controller.file.modify);
   router.get('/file/read', controller.file.read);

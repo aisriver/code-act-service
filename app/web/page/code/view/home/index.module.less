@@ -21,10 +21,18 @@
           color: #999 !important;
           font-family: 'Lora', 'Times New Roman', serif;
         }
+        .ant-tree-node-selected {
+          background-color: #16beba;
+          color: #fff !important;
+        }
+        .ant-tree-node-content-wrapper:hover {
+          background-color: #16beba61;
+        }
       }
     }
   }
   .right {
+    height: 100vh;
     padding: 8px;
     overflow-y: auto;
     background-color: #191b22;
@@ -44,7 +52,10 @@
   padding: 0 12px;
   z-index: 99;
 
-  .save {
+  .btn {
+    margin-left: 8px;
+  }
+  .default {
     background-color: #17beba;
     border-color: #17beba;
     color: #fff;

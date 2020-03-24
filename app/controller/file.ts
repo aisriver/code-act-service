@@ -3,7 +3,7 @@
  * @作者: 廖军
  * @Date: 2020-03-22 17:07:00
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-24 00:50:32
+ * @LastEditTime: 2020-03-24 22:20:56
  */
 import { Controller, Context } from 'egg';
 import { getSuccessData, getErrorData } from '../utils/status';
@@ -15,6 +15,38 @@ import { checkCtxParams } from '../utils/check';
 const fs = require('fs');
 
 export default class FileController extends Controller {
+  /**
+   * 到指定目录新建文件
+   * 测试地址 http://localhost:7001/file/add?path=src%2fpages&fileName=test.js
+   * @param ctx
+   */
+  public async add(ctx: Context) {
+    const { path: pathStr, fileName } = ctx.query;
+    const checkParams = checkCtxParams(ctx, ['fileName']);
+    if (!checkParams.isPass) {
+      ctx.body = checkParams.body;
+      return;
+    }
+    // 检查是否存在
+    if (fs.existsSync(`${toRootPath}${getClearPath(pathStr)}/${fileName}`)) {
+      ctx.body = getErrorData(null, '文件已存在！');
+      return;
+    }
+    // 获取创建命令并创建
+    const toRoot = getToRootPathCommand();
+    const command = getCommandByArray([
+      toRoot,
+      pathStr ? `cd ${pathStr}` : '',
+      `${commandConfig.addFile} ${fileName}`,
+    ]);
+    const result = await execPromise(command);
+    // 创建异常
+    if (result.error) {
+      ctx.body = getErrorData(result.error, '创建文件失败，请检查路径是否正确！');
+      return;
+    }
+    ctx.body = getSuccessData(null, `成功创建文件 ${fileName} 至 ${pathStr || '根目录'}！`);
+  }
   /**
    * 读取指定路径文件
    * 测试地址 http://localhost:7001/file/read?path=codeact.config.js
@@ -79,7 +111,7 @@ export default class FileController extends Controller {
     // 删除目标文件
     const command = getCommandByArray([
       toRoot,
-      `cd ${filePath}`,
+      filePath ? `cd ${filePath}` : '',
       `${commandConfig.delete} ${fileName}`,
     ]);
     const result = await execPromise(command);

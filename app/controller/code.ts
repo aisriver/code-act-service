@@ -3,7 +3,7 @@
  * @作者: 廖军
  * @Date: 2020-03-19 22:59:35
  * @LastEditors: 廖军
- * @LastEditTime: 2020-03-22 22:52:24
+ * @LastEditTime: 2020-03-24 19:48:27
  */
 import { Controller, Context } from 'egg';
 import { deserialize } from '@hubcarl/json-typescript-mapper';
@@ -11,7 +11,7 @@ import Condition from '../lib/condition';
 
 export default class CodeController extends Controller {
   public async home(ctx: Context) {
-    await ctx.render('code.js', { url: ctx.url });
+    await ctx.renderClient('code.js', { url: ctx.url });
   }
 
   public async list(ctx: Context) {
