@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Link, Switch, withRouter } from 'react-router-dom';
 import { hot } from 'react-hot-loader/root';
-import { ARTICLE_LIST, ARTICLE_DETAIL } from '../store/constant';
+import { ARTICLE_LIST } from '../store/constant';
 import Layout from '../../../component/layout';
 import Header from '../../../component/header';
 import Route from '../router/route';
 import Home from './home';
-import Detail from './detail';
 import Introduce from './introduce';
 import './main.css';
 
@@ -38,7 +37,6 @@ class Main extends Component {
           </li> */}
         </ul>
         <Switch>
-          <Route type={ARTICLE_DETAIL} path="/detail/:id" component={Detail} />
           {/* <Route path="/generator" component={Generator} /> */}
           <Route path="/introduce" component={Introduce} />
           <Route type={ARTICLE_LIST} path="/" component={Home} />
