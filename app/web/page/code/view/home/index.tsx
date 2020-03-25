@@ -1,12 +1,13 @@
 import React, { useState, useEffect, createRef } from 'react';
 import { hot } from 'react-hot-loader/root';
-import { Tree, Row, Col, Button, message, Modal, Input } from 'antd';
+import { Tree, Row, Col, Button, message, Modal, Input, Switch } from 'antd';
 import { FolderOpenFilled, FileTextOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import { UnControlled } from 'react-codemirror2';
+import { Controlled } from 'react-codemirror2';
 import classnames from 'classnames';
 import request from '../../../../framework/request';
 import { tryCatch } from '../../../../../utils/exception-handling';
 import GenCode from '../../components/GenCode';
+import GridGenerator from '../../components/GridGenerator';
 import styles from './index.module.less';
 
 const { TreeNode } = Tree;
@@ -18,11 +19,18 @@ export interface ListType {
   children?: ListType[];
 }
 
+export interface GenerateParams {
+  key: '' | 'grid';
+}
+
 const Home: React.FC = () => {
   const [list, setList] = useState<ListType[]>([]);
   const [fileText, setFileText] = useState('');
   const [selected, setSelected] = useState<ListType>();
-  const codeMirrorRef = createRef<UnControlled>();
+  const codeMirrorRef = createRef<Controlled>();
+  const [generateParams, setGenerateParams] = useState<GenerateParams>({ key: '' });
+  const isGridGenerator = generateParams.key === 'grid';
+  const isSelectFile = selected?.type === 'file';
 
   /**
    * 获取工程结构
@@ -38,7 +46,7 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     getStructure();
-  }, [getStructure]);
+  }, []);
 
   /**
    * 渲染节点
@@ -183,10 +191,26 @@ const Home: React.FC = () => {
     });
   };
 
+  /**
+   *  注册保存快捷键
+   */
+  useEffect(() => {
+    window.onkeydown = e => {
+      const bCtrlKeyCode = e.ctrlKey || e.metaKey;
+      if (e.keyCode === 83 && bCtrlKeyCode) {
+        // 这个要放在里面 否则会引起按键失效
+        e.preventDefault();
+        if (isSelectFile) {
+          handleSaveFile();
+        }
+      }
+    };
+  }, []);
+
   return (
     <div>
       <Row className={styles.container}>
-        <Col className={styles.left} span={6} offset={2}>
+        <Col className={styles.left} span={6} offset={1}>
           <Tree
             onSelect={handleSelect}
             showIcon
@@ -199,10 +223,21 @@ const Home: React.FC = () => {
         </Col>
         <Col className={styles.right} span={14}>
           <GenCode
-            onChange={(_editor, _data, value: string) => selected?.type && setFileText(value)}
+            onChange={(_editor, _data, value: string) => isSelectFile && setFileText(value)}
             ref={codeMirrorRef}
             value={fileText}
           />
+        </Col>
+        <Col span={3} className={styles.generate}>
+          {isSelectFile && (
+            <Switch
+              className={styles.switch}
+              checkedChildren="Grid布局生成器示例"
+              unCheckedChildren="Grid布局生成器示例"
+              checked={isGridGenerator}
+              onChange={checked => checked && setGenerateParams({ ...generateParams, key: 'grid' })}
+            />
+          )}
         </Col>
       </Row>
       <div className={styles.footer}>
@@ -222,7 +257,7 @@ const Home: React.FC = () => {
             </Button>
           </>
         )}
-        {selected?.type === 'file' && (
+        {isSelectFile && (
           <Button onClick={handleSaveFile} className={classnames(styles.btn, styles.default)}>
             保存
           </Button>
@@ -233,6 +268,16 @@ const Home: React.FC = () => {
           </Button>
         )}
       </div>
+      {isGridGenerator && (
+        <GridGenerator
+          onClose={() => setGenerateParams({ key: '' })}
+          onConfirm={code => {
+            setFileText(`${fileText}\n${code}`);
+            setGenerateParams({ key: '' });
+          }}
+          visible={isGridGenerator}
+        />
+      )}
     </div>
   );
 };

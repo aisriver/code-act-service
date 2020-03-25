@@ -1,0 +1,37 @@
+.dragContent {
+  width: 100%;
+  height: max-content;
+  position: relative;
+
+  .grid {
+    display: grid;
+
+    .gridItem {
+      background-color: #ecedf0;
+      border: 1px solid #fff;
+    }
+  }
+  .drag {
+    display: grid;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.blocks {
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f3f3;
+  margin-bottom: 20px;
+  display: flex;
+
+  .selectedBocks {
+    margin-left: 8px;
+
+    .selectedTag {
+      margin: 4px;
+    }
+  }
+}
