@@ -2,9 +2,9 @@
 
 配合命令行工具 codeact 使用的一项辅助开发的解决方案
 
-![md_1](https://github.com/aisriver/code-act-service/blob/master/docs/images/01.png)
+![md_1](https://github.com/aisriver/code-act-service/blob/master/docs/images/01.png?raw=true)
 
-![md_1](https://github.com/aisriver/code-act-service/blob/master/docs/images/02.png)
+![md_1](https://github.com/aisriver/code-act-service/blob/master/docs/images/02.png?raw=true)
 
 ## 使用方法
 
