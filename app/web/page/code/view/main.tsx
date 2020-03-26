@@ -15,7 +15,7 @@ class Main extends Component {
   }
 
   render() {
-    const { pathname } = this.props.location;
+    const { pathname } = this.props['location'];
     return (
       <Layout {...this.props}>
         <Header />
