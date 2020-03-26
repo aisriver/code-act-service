@@ -2,6 +2,10 @@
 
 配合命令行工具 codeact 使用的一项辅助开发的解决方案
 
+![md_1](docs/images/01.jpg)
+
+![md_1](docs/images/02.jpg)
+
 ## 使用方法
 
 - npm install -g codeact
